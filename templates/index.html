@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block main %}
+<h2>{{ name }}</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Stock</th>
+                    <th>Amount</th>
+                    <th>Price</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    {% for tab in table %}
+                        {% if tab.amount > 0 %}
+                            <tr>
+                                <td> {{ tab.symbol }}</td>
+                                <td> {{ tab.amount }}</td>
+                                <td> {{ tab.price | usd }}</td>
+                                <td> {{ tab.value | usd }}</td>
+                            </tr>
+                            {% endif %}
+                    {% endfor %}
+                </tr>
+            </tbody>
+        </table>
+<h3>Available balance: {{ cash | usd }}</h3>
+<h4>Total value of portfolio = {{ portfolio_value | usd }} </h3>
+
+{% endblock %}

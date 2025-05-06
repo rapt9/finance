@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    History
+{% endblock %}
+
+{% block main %}
+<h2>Transaction History</h2>
+
+<h3>Bought</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Stock</th>
+            <th>Time</th>
+            <th>Amount</th>
+            <th>Type</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for buy in bought %}
+            <tr>
+                <td> {{ buy.symbol }}</td>
+                <td> {{ buy.time }}</td>
+                <td> {{ buy.amount }}</td>
+                <td>Buy</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h3>Sold</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Stock</th>
+            <th>Time</th>
+            <th>Amount</th>
+            <th>Type</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for sell in sold %}
+            <tr>
+                <td> {{ sell.symbol }}</td>
+                <td> {{ sell.time }}</td>
+                <td> {{ sell.amount }}</td>
+                <td>Sell</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

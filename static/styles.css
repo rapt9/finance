@@ -1,0 +1,127 @@
+/* Size for brand */
+nav .navbar-brand
+{
+    font-size: xx-large;
+
+}
+
+/* Colors for brand */
+nav .navbar-brand .orange
+{
+    color: #ef542c;
+}
+
+/* Custom color for navbar links */
+nav .navbar-nav .nav-link,
+nav .navbar-nav .nav-link:link,
+nav .navbar-nav .nav-link:visited {
+    color: #ef542c;
+}
+
+nav .navbar-nav .nav-link:hover {
+    color: #030506 !important; /* Dosent work without important */
+}
+
+/* Backround color */
+body {
+    background-color: #2e4053;
+    color: #ef542c;
+}
+
+/* Table styling */
+table {
+    border: 2px solid #ef542c;
+    border-collapse: collapse;
+    background-color: #2e4053;
+    margin-bottom: 1rem;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+table th,
+table td {
+    border: 1px solid #ef542c;
+    padding: 0.75rem;
+    vertical-align: middle;
+}
+
+tbody tr:nth-of-type(odd) {
+    background-color: #212529
+}
+
+/* Button color */
+.btn-primary {
+    background-color: #ef542c;
+    border-color: #191d23;
+    color: #191d23;
+}
+
+/* Button color on hover */
+.btn-primary:hover {
+    background-color: #212529;
+    border-color: #ef542c;
+    color: #ef542c;
+}
+
+/* Footer styling */
+footer {
+    color: #ef542c;
+}
+
+footer a {
+    color: #ef542c;
+}
+
+footer a:hover {
+    color: #ef542c;
+}
+
+/* For sell element styling */
+select {
+
+    padding: 8px;
+    border: 1px solid #030506;
+    border-radius: 2px;
+    background-color: #ef542c;
+    color: #212529;
+    border-color: #212529;
+
+}
+
+/* Form styling */
+.form-control {
+    border-color: #ef542c;
+    background-color: #2e4053;
+    color: #ef542c;
+}
+
+.form-control:focus {
+    border-color: #ff3333;
+    background-color: #2e4053;
+    box-shadow: 0 0 5px rgba(255, 51, 51, 0.5);
+    color: #ef542c;
+}
+
+.form-control::placeholder {
+    color: #ef542c;
+}
+
+.custom-select {
+    /* Background color when not focused */
+    background-color: #ef542c;
+
+    /* Text color */
+    color: #191d23;
+
+    /* Border color */
+    border: 1px solid #191d23;
+
+}
+
+.custom-select:focus {
+    border-color: #ef542c;
+    background-color: #212529;
+    color: #ef542c;
+    box-shadow: 0 0 0 0.08rem rgba(239, 84, 44); /* Example color */
+}
