@@ -53,5 +53,6 @@ flask run
 ```bash
 docker pull rapt9/finance:latest
 docker run -d -p 5000:5000 rapt9/finance
+
 # Create an account at http://localhost:5000/register⁠ and start trading! 
 ```
