@@ -33,15 +33,13 @@ jobs:
         run: |
           docker tag my-app:latest registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web
 
-      # 🚀 Push to Docker Hub
       - name: Push image to Docker Hub
         run: docker push rapt9/finance:latest
 
-      # 🚀 Push to Heroku
+
       - name: Push image to Heroku
         run: docker push registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web
 
-      # 🔁 Release Heroku App
       - name: Release app on Heroku
         run: |
           IMAGE_ID=$(docker inspect registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web --format={{.Id}})
