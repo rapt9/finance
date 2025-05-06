@@ -1,11 +1,11 @@
-name: Docker Image CI
+name: Docker Image CI/CD
 
 on:
   push:
     branches: [ "main" ]
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -21,23 +21,28 @@ jobs:
       - name: Log in to Heroku Container Registry
         run: echo "${{ secrets.HEROKU_API_KEY }}" | docker login --username=_ --password-stdin registry.heroku.com
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+      - name: Build Docker image
+        run: |
+          docker build -t my-app:latest .
 
-      - name: Build and push to Docker Hub
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          push: true
-          tags: rapt9/finance:latest
+      - name: Tag image for Docker Hub
+        run: |
+          docker tag my-app:latest rapt9/finance:latest
 
-      - name: Build Docker image for Heroku
-        run: docker build -t registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web .
+      - name: Tag image for Heroku
+        run: |
+          docker tag my-app:latest registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web
 
-      - name: Push Docker image to Heroku
+      # 🚀 Push to Docker Hub
+      - name: Push image to Docker Hub
+        run: docker push rapt9/finance:latest
+
+      # 🚀 Push to Heroku
+      - name: Push image to Heroku
         run: docker push registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web
 
-      - name: Release Heroku app
+      # 🔁 Release Heroku App
+      - name: Release app on Heroku
         run: |
           IMAGE_ID=$(docker inspect registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web --format={{.Id}})
           curl -n -X PATCH https://api.heroku.com/apps/${{ secrets.HEROKU_APP_NAME }}/formation \
@@ -45,3 +50,4 @@ jobs:
             -H "Accept: application/vnd.heroku+json; version=3.docker-releases" \
             -H "Authorization: Bearer ${{ secrets.HEROKU_API_KEY }}" \
             -d "{\"updates\":[{\"type\":\"web\",\"docker_image\":\"$IMAGE_ID\"}]}"
+
