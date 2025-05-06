@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Docker Image CI/CD
 
 on:
   push:
@@ -19,6 +19,9 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - 
+        name: Log in to Heroku Container Registry
+        run: echo "${{ secrets.HEROKU_API_KEY }}" | docker login --username=_ --password-stdin registry.heroku.com
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -31,3 +34,17 @@ jobs:
         with:
           push: true
           tags: rapt9/finance:latest
+          
+      - name: Build and push to Heroku Container Registry
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          tags: registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web
+
+      - name: Release app on Heroku
+        run: |
+          curl -n -X PATCH https://api.heroku.com/apps/${{ secrets.HEROKU_APP_NAME }}/formation \
+          -H "Content-Type: application/json" \
+          -H "Accept: application/vnd.heroku+json; version=3.docker-releases" \
+          -H "Authorization: Bearer ${{ secrets.HEROKU_API_KEY }}" \
+          -d '{"updates":[{"type":"web","docker_image":"'"$(docker inspect registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web --format={{.Id}})"'"}]}'
