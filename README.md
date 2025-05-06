@@ -3,7 +3,7 @@
 **Finance** is a stock trading simulator built with **Python**, **Flask**, and **SQLite**.  
 It offers a simple web interface for simulating buying/selling stocks, and tracking portfolio performance.
 
-The app uses two API:s. One to get the current prices of stocks (yfinance), and another to get memes for HTTP error messages (memegen).
+The app uses two API:s. One to get the current prices of stocks (yfinance), and another to get memes for HTTP status messages (memegen).
 
 ---
 
