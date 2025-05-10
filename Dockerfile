@@ -1,31 +1,36 @@
-# Use the official lightweight Python image
-FROM python:3.11-slim
+# --- Build stage ---
+FROM python:3.11-slim as builder
 
-# Set environment variables
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
-
-# Set work directory
 WORKDIR /app
 
-# Install system dependencies for SQLite
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends gcc libsqlite3-dev \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+# Install system dependencies (SQLite)
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends gcc libsqlite3-dev && \
+    rm -rf /var/lib/apt/lists/*
 
-# Copy project files
+# Copy and install dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir --target=/app -r requirements.txt
+
+# Copy application code
 COPY . /app
 
-# Install Python dependencies
-RUN pip install -r requirements.txt
+# --- Runtime stage ---
+FROM gcr.io/distroless/python3
 
-# Expose port
+# Set environment variables
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    FLASK_APP=app.py \
+    FLASK_ENV=production
+
+WORKDIR /app
+
+# Copy installed packages and source code from build stage
+COPY --from=builder /app /app
+
+# Expose Flask port
 EXPOSE 5000
 
-# Set environment variables for Flask
-ENV FLASK_APP=app.py
-ENV FLASK_ENV=development
-
-# Run the application
-CMD ["python", "app.py"]
+# Entrypoint
+CMD ["app.py"]
